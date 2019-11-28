@@ -65,9 +65,6 @@ OBJ += $(C_SOURCES:.c=.o)
 
 STARTUP_PATH = libdaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc
 
-# ASM_SOURCES = $(STARTUP_PATH)/startup_stm32h750xx.s
-# OBJ += $(ASM_SOURCES:.s=.o)
-
 TARGET = verb
 CHIPSET = stm32h7x
 
