@@ -1,5 +1,5 @@
-OBJ += $(addprefix verb/, reverbsc.o dcblock.o system_stm32h7xx.o verb.o)
-OBJ += $(addprefix verb/, startup_stm32h750xx.o)
+OBJ += reverbsc.o dcblock.o system_stm32h7xx.o verb.o
+OBJ += startup_stm32h750xx.o
 
 MODULES = \
 codec_pcm3060 \
@@ -103,13 +103,8 @@ CFLAGS += \
 ASFLAGS += $(MCU) -O2 -Wall -fdata-sections -ffunction-sections
 CFLAGS += $(MCU) -O2 -Wall -fdata-sections -ffunction-sections
 
-ifeq ($(DEBUG), 1)
-CFLAGS += -g -gdwarf-2
-endif
+LDSCRIPT = STM32H750IB_flash.lds
 
-LDSCRIPT = verb/STM32H750IB_flash.lds
-
-#LIBS = -ldaisy -lc -lm -lnosys
 LIBS = -lc -lm -lnosys
 LDFLAGS += -L$(LIBDAISY_DIR)
 LDFLAGS += $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBS) -Wl,--gc-sections
