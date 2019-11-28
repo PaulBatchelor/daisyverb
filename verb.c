@@ -13,7 +13,68 @@ typedef struct
 	dsy_gpio_t		   led, testpoint;
 } daisy_handle;
 
-#include "dsy_patch_bsp.h"
+/* #include "dsy_patch_bsp.h" */
+
+
+#define BUTTON_1_PORT DSY_GPIOA
+#define BUTTON_1_PIN 8
+#define BUTTON_2_PORT DSY_GPIOB
+#define BUTTON_2_PIN 12 
+#define TOGGLE_PORT DSY_GPIOG
+#define TOGGLE_PIN 11 
+#define GATE_1_PORT DSY_GPIOB
+#define GATE_1_PIN 5
+#define GATE_2_PORT DSY_GPIOB
+#define GATE_2_PIN 4
+#define GATE_OUT_PORT DSY_GPIOG
+#define GATE_OUT_PIN 10
+
+
+
+// Order of ADC Channels for accessing dsy_adc.h
+enum
+{
+	DSY_PATCH_KNOB_1,
+	DSY_PATCH_KNOB_2,
+	DSY_PATCH_KNOB_3,
+	DSY_PATCH_KNOB_4,
+	DSY_PATCH_CV_1,
+	DSY_PATCH_CV_2,
+	DSY_PATCH_CV_3,
+	DSY_PATCH_CV_4,
+	DSY_PATCH_CV_LAST
+};
+
+// Mapping of LEDs via dsy_leddriver.h
+enum
+{
+	LED_A4,
+	LED_A3,
+	LED_A2,
+	LED_A1,
+	LED_B4,
+	LED_B3,
+	LED_B2,
+	LED_B1,
+	LED_C4,
+	LED_C3,
+	LED_C2,
+	LED_C1,
+	LED_D4,
+	LED_D3,
+	LED_D2,
+	LED_D1,
+	LED_LAST
+};
+
+
+typedef struct
+{
+	dsy_switch_t button1, button2, toggle;
+	dsy_gpio_t   gate_in1, gate_in2, gate_out;
+	daisy_handle seed;
+} daisy_patch;
+
 // Specifies whether generic initialization will be done within the daisy_seed_init, or not.
 // Allows for more selective init
 //#define DSY_SEED_NO_INIT 1
