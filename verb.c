@@ -134,21 +134,21 @@ void daisy_seed_init(daisy_handle *daisy_seed)
 	dsy_gpio_pin *pin_group; // Pointer to an arbitrary group of pins.
 
 	// QSPI
-	daisy_seed->qspi_handle.device   = DSY_QSPI_DEVICE_IS25LP064A;
-	daisy_seed->qspi_handle.mode	 = DSY_QSPI_MODE_DSY_MEMORY_MAPPED;
-	pin_group						 = daisy_seed->qspi_handle.pin_config;
-	pin_group[DSY_QSPI_PIN_IO0].port = DSY_GPIOF;
-	pin_group[DSY_QSPI_PIN_IO0].pin  = 8;
-	pin_group[DSY_QSPI_PIN_IO1].port = DSY_GPIOF;
-	pin_group[DSY_QSPI_PIN_IO1].pin  = 9;
-	pin_group[DSY_QSPI_PIN_IO2].port = DSY_GPIOF;
-	pin_group[DSY_QSPI_PIN_IO2].pin  = 7;
-	pin_group[DSY_QSPI_PIN_IO3].port = DSY_GPIOF;
-	pin_group[DSY_QSPI_PIN_IO3].pin  = 6;
-	pin_group[DSY_QSPI_PIN_CLK].port = DSY_GPIOF;
-	pin_group[DSY_QSPI_PIN_CLK].pin  = 10;
-	pin_group[DSY_QSPI_PIN_NCS].port = DSY_GPIOG;
-	pin_group[DSY_QSPI_PIN_NCS].pin  = 6;
+	/* daisy_seed->qspi_handle.device   = DSY_QSPI_DEVICE_IS25LP064A; */
+	/* daisy_seed->qspi_handle.mode	 = DSY_QSPI_MODE_DSY_MEMORY_MAPPED; */
+	/* pin_group						 = daisy_seed->qspi_handle.pin_config; */
+	/* pin_group[DSY_QSPI_PIN_IO0].port = DSY_GPIOF; */
+	/* pin_group[DSY_QSPI_PIN_IO0].pin  = 8; */
+	/* pin_group[DSY_QSPI_PIN_IO1].port = DSY_GPIOF; */
+	/* pin_group[DSY_QSPI_PIN_IO1].pin  = 9; */
+	/* pin_group[DSY_QSPI_PIN_IO2].port = DSY_GPIOF; */
+	/* pin_group[DSY_QSPI_PIN_IO2].pin  = 7; */
+	/* pin_group[DSY_QSPI_PIN_IO3].port = DSY_GPIOF; */
+	/* pin_group[DSY_QSPI_PIN_IO3].pin  = 6; */
+	/* pin_group[DSY_QSPI_PIN_CLK].port = DSY_GPIOF; */
+	/* pin_group[DSY_QSPI_PIN_CLK].pin  = 10; */
+	/* pin_group[DSY_QSPI_PIN_NCS].port = DSY_GPIOG; */
+	/* pin_group[DSY_QSPI_PIN_NCS].pin  = 6; */
 
 	// FMC
 	daisy_seed->sdram_handle.state		= DSY_SDRAM_STATE_ENABLE;
@@ -247,21 +247,22 @@ void daisy_seed_init(daisy_handle *daisy_seed)
 	pin_group[DSY_DAC_CHN2].port	= DSY_GPIOA;
 	pin_group[DSY_DAC_CHN2].pin		= 5;
 
-	// GPIO
-	daisy_seed->led.pin.port	   = SEED_LED_PORT;
-	daisy_seed->led.pin.pin		   = SEED_LED_PIN;
-	daisy_seed->led.mode		   = DSY_GPIO_MODE_OUTPUT_PP;
-	daisy_seed->testpoint.pin.port = SEED_TEST_POINT_PORT;
-	daisy_seed->testpoint.pin.pin  = SEED_TEST_POINT_PIN;
-	daisy_seed->testpoint.mode	 = DSY_GPIO_MODE_OUTPUT_PP;
+	/* // GPIO */
+	/* daisy_seed->led.pin.port	   = SEED_LED_PORT; */
+	/* daisy_seed->led.pin.pin		   = SEED_LED_PIN; */
+	/* daisy_seed->led.mode		   = DSY_GPIO_MODE_OUTPUT_PP; */
+	/* daisy_seed->testpoint.pin.port = SEED_TEST_POINT_PORT; */
+	/* daisy_seed->testpoint.pin.pin  = SEED_TEST_POINT_PIN; */
+	/* daisy_seed->testpoint.mode	 = DSY_GPIO_MODE_OUTPUT_PP; */
 
 	// System Initialization (optional)
+
 #ifndef DSY_SEED_NO_INIT
 	dsy_system_init();
 	dsy_sdram_init(&daisy_seed->sdram_handle);
-	dsy_qspi_init(&daisy_seed->qspi_handle);
-	dsy_gpio_init(&daisy_seed->led);
-	dsy_gpio_init(&daisy_seed->testpoint);
+	/* dsy_qspi_init(&daisy_seed->qspi_handle); */
+	/* dsy_gpio_init(&daisy_seed->led); */
+	/* dsy_gpio_init(&daisy_seed->testpoint); */
 	dsy_audio_init(&daisy_seed->sai_handle,
 				   &daisy_seed->i2c2_handle,
 				   &daisy_seed->i2c1_handle);
@@ -292,43 +293,43 @@ static void VerbCallback(float *in, float *out, size_t size)
 void daisy_patch_init(daisy_patch *p) 
 {
 
-	p->button1.pin_config.port = BUTTON_1_PORT;
-	p->button1.pin_config.pin = BUTTON_1_PIN;
-	p->button1.pull = DSY_SWITCH_PULLUP;
-	p->button1.polarity		   = DSY_SWITCH_POLARITY_INVERTED;
-	p->button1.type			   = DSY_SWITCH_TYPE_MOMENTARY;
+	/* p->button1.pin_config.port = BUTTON_1_PORT; */
+	/* p->button1.pin_config.pin = BUTTON_1_PIN; */
+	/* p->button1.pull = DSY_SWITCH_PULLUP; */
+	/* p->button1.polarity		   = DSY_SWITCH_POLARITY_INVERTED; */
+	/* p->button1.type			   = DSY_SWITCH_TYPE_MOMENTARY; */
 
-	p->button2.pin_config.port = BUTTON_2_PORT;
-	p->button2.pin_config.pin = BUTTON_2_PIN;
-	p->button2.pull = DSY_SWITCH_PULLUP;
-	p->button2.polarity		   = DSY_SWITCH_POLARITY_INVERTED;
-	p->button2.type			   = DSY_SWITCH_TYPE_MOMENTARY;
+	/* p->button2.pin_config.port = BUTTON_2_PORT; */
+	/* p->button2.pin_config.pin = BUTTON_2_PIN; */
+	/* p->button2.pull = DSY_SWITCH_PULLUP; */
+	/* p->button2.polarity		   = DSY_SWITCH_POLARITY_INVERTED; */
+	/* p->button2.type			   = DSY_SWITCH_TYPE_MOMENTARY; */
 
-	p->toggle.pin_config.port = TOGGLE_PORT;
-	p->toggle.pin_config.pin = TOGGLE_PIN;
-	p->toggle.pull = DSY_SWITCH_PULLUP;
-	p->toggle.type			   = DSY_SWITCH_TYPE_TOGGLE;
+	/* p->toggle.pin_config.port = TOGGLE_PORT; */
+	/* p->toggle.pin_config.pin = TOGGLE_PIN; */
+	/* p->toggle.pull = DSY_SWITCH_PULLUP; */
+	/* p->toggle.type			   = DSY_SWITCH_TYPE_TOGGLE; */
 
-	p->gate_in1.pin.port = GATE_1_PORT;
-	p->gate_in1.pin.pin = GATE_1_PIN;
-	p->gate_in1.mode	 = DSY_GPIO_MODE_INPUT;
+	/* p->gate_in1.pin.port = GATE_1_PORT; */
+	/* p->gate_in1.pin.pin = GATE_1_PIN; */
+	/* p->gate_in1.mode	 = DSY_GPIO_MODE_INPUT; */
 
-	p->gate_in2.pin.port = GATE_2_PORT;
-	p->gate_in2.pin.pin = GATE_2_PIN;
-	p->gate_in2.mode	 = DSY_GPIO_MODE_INPUT;
+	/* p->gate_in2.pin.port = GATE_2_PORT; */
+	/* p->gate_in2.pin.pin = GATE_2_PIN; */
+	/* p->gate_in2.mode	 = DSY_GPIO_MODE_INPUT; */
 
-	p->gate_out.pin.port = GATE_OUT_PORT;
-	p->gate_out.pin.pin = GATE_OUT_PIN;
-	p->gate_out.pull	 = DSY_GPIO_NOPULL;
-	p->gate_out.mode	 = DSY_GPIO_MODE_OUTPUT_PP;
+	/* p->gate_out.pin.port = GATE_OUT_PORT; */
+	/* p->gate_out.pin.pin = GATE_OUT_PIN; */
+	/* p->gate_out.pull	 = DSY_GPIO_NOPULL; */
+	/* p->gate_out.mode	 = DSY_GPIO_MODE_OUTPUT_PP; */
 
-	dsy_switch_init(&p->button1);
-	dsy_switch_init(&p->button2);
-	dsy_switch_init(&p->toggle);
-	dsy_gpio_init(&p->gate_in1);
-	dsy_gpio_init(&p->gate_in2);
-	dsy_gpio_init(&p->gate_out);
-	// ADC related
+	/* dsy_switch_init(&p->button1); */
+	/* dsy_switch_init(&p->button2); */
+	/* dsy_switch_init(&p->toggle); */
+	/* dsy_gpio_init(&p->gate_in1); */
+	/* dsy_gpio_init(&p->gate_in2); */
+	/* dsy_gpio_init(&p->gate_out); */
+	/* // ADC related */
 	uint8_t channel_order[8]		  = {DSY_ADC_PIN_CHN3,
 								 DSY_ADC_PIN_CHN10,
 								 DSY_ADC_PIN_CHN7,
