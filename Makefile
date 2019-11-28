@@ -1,3 +1,73 @@
+OBJ += $(addprefix verb/, reverbsc.o dcblock.o system_stm32h7xx.o verb.o)
+OBJ += $(addprefix verb/, startup_stm32h750xx.o)
+
+MODULES = \
+codec_pcm3060 \
+codec_wm8731 \
+dsy_dma \
+dsy_adc \
+dsy_audio \
+dsy_leddriver \
+dsy_qspi \
+dsy_sdram \
+dsy_system \
+dsy_i2c \
+dsy_sai \
+dsy_gpio \
+dsy_dac \
+dsy_switch \
+
+C_SOURCES += $(addprefix libdaisy/, $(addsuffix .c, $(MODULES)))
+
+C_SOURCES += \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_fmc.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sdram.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_qspi.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rng.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_sdmmc.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_delayblock.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c \
+libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c \
+
+OBJ += $(C_SOURCES:.c=.o)
+
+STARTUP_PATH = libdaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc
+
+# ASM_SOURCES = $(STARTUP_PATH)/startup_stm32h750xx.s
+# OBJ += $(ASM_SOURCES:.s=.o)
+
 TARGET = verb
 CHIPSET = stm32h7x
 
@@ -42,14 +112,12 @@ endif
 
 LDSCRIPT = verb/STM32H750IB_flash.lds
 
-LIBS = -ldaisy -lc -lm -lnosys
+#LIBS = -ldaisy -lc -lm -lnosys
+LIBS = -lc -lm -lnosys
 LDFLAGS += -L$(LIBDAISY_DIR)
 LDFLAGS += $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBS) -Wl,--gc-sections
 
 all: $(TARGET).elf $(TARGET).hex $(TARGET).bin
-
-OBJ += $(addprefix verb/, reverbsc.o dcblock.o system_stm32h7xx.o verb.o)
-OBJ += $(addprefix verb/, startup_stm32h750xx.o)
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $< -o $@

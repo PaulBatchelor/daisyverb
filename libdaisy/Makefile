@@ -20,10 +20,6 @@ system_stm32h7xx \
 
 OPT = -O3
 
-SOURCES_DIR =  \
-Drivers/CMSIS \
-Drivers/STM32H7xx_HAL_Driver \
-
 BUILD_DIR = build
 
 C_SOURCES += $(addsuffix .c, $(MODULES))
@@ -70,13 +66,13 @@ Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c \
 
-OBJ+=$(C_SOURCES:.c=.o)
+OBJ += $(C_SOURCES:.c=.o)
 
 STARTUP_PATH = Drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc
 
-ASM_SOURCES =  $(STARTUP_PATH)/startup_stm32h750xx.s
+ASM_SOURCES = $(STARTUP_PATH)/startup_stm32h750xx.s
 
-OBJ+=$(ASM_SOURCES:.s=.o)
+OBJ += $(ASM_SOURCES:.s=.o)
 
 PREFIX = arm-none-eabi-
 
