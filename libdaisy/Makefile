@@ -70,10 +70,13 @@ Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c \
 Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c \
 
+OBJ+=$(C_SOURCES:.c=.o)
+
 STARTUP_PATH = Drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc
 
-ASM_SOURCES =  \
-$(STARTUP_PATH)/startup_stm32h750xx.s
+ASM_SOURCES =  $(STARTUP_PATH)/startup_stm32h750xx.s
+
+OBJ+=$(ASM_SOURCES:.s=.o)
 
 PREFIX = arm-none-eabi-
 
@@ -118,28 +121,25 @@ endif
 LDSCRIPT = STM32H750IB_FLASH.lds
 
 LIBS = lc -lm -lnosys
-LIBDIR =
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
 
-all: $(BUILD_DIR)/$(TARGET).a
+all: $(TARGET).a
 
-OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
-vpath %.c $(sort $(dir $(C_SOURCES)))
-OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
-vpath %.s $(sort $(dir $(ASM_SOURCES)))
+# OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
+# #vpath %.c $(sort $(dir $(C_SOURCES)))
+# OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
+#vpath %.s $(sort $(dir $(ASM_SOURCES)))
 
-$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
-	$(CC) -c $(CFLAGS) -static -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
-
-
-$(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
+%.o: %.c
+	$(CC) -c $(CFLAGS) -static $< -o $@
+%.o: %.s
 	$(AS) -c $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/$(TARGET).a: $(OBJECTS) Makefile
-	$(AR) rcs $@ $(OBJECTS)
+$(TARGET).a: $(OBJ)
+	$(AR) rcs $@ $(OBJ)
 
 $(BUILD_DIR):
 	mkdir $@
 
 clean:
 	$(RM) -R $(BUILD_DIR)
+	$(RM) -R $(OBJ)

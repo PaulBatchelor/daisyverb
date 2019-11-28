@@ -46,7 +46,7 @@ endif
 LDSCRIPT = STM32H750IB_flash.lds
 
 LIBS = -ldaisy -lc -lm -lnosys
-LDFLAGS += -L$(LIBDAISY_DIR)/build -L$(DAISYSP_DIR)/build
+LDFLAGS += -L$(LIBDAISY_DIR)
 LDFLAGS += $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBS) -Wl,--gc-sections
 
 all: $(TARGET).elf $(TARGET).hex $(TARGET).bin
