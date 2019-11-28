@@ -1,219 +1,81 @@
 TARGET = verb
 CHIPSET = stm32h7x
 
-TARGET_BIN=$(TARGET).bin
-TARGET_ELF=$(TARGET).elf
 FLASH_ADDRESS = 0x08000000
 
+LIBDAISY_DIR = ../libdaisy
 
-# If you have the arm-none-eabi- toolchain located in a particular place, but not installed for the entire system, add the path here:
-# GCC_PATH=
+DAISYSP_DIR = ../daisysp
 
-######################################
-# OpenOCD stuff
-# TODO: add config.mk file for settings like programmer, etc.
-######################################
-OCD=openocd
-OCD_DIR = /usr/local/share/openocd/scripts
-#PGM_DEVICE ?= interface/stlink-v2.cfg
-PGM_DEVICE ?= interface/stlink.cfg
-OCDFLAGS = -f $(PGM_DEVICE) -f target/$(CHIPSET).cfg
-
-GDB_FLAGS=
-
-######################################
-# building variables
-######################################
-# debug build?
-#DEBUG = 1
-# optimization
-#OPT = -Og
-OPT = -O2
-
-
-######################################
-# paths
-######################################
-
-# Build path
-BUILD_DIR = build
-
-LIBDAISY_DIR = \
-../libdaisy
-
-DAISYSP_DIR = \
-../daisysp
-
-SYSTEM_FILES_DIR = \
-core
-
-######################################
-# source
-######################################
-
-C_SOURCES = \
-reverbsc.c dcblock.c verb.c \
-$(SYSTEM_FILES_DIR)/system_stm32h7xx.c
-
-ASM_SOURCES = \
-$(SYSTEM_FILES_DIR)/startup_stm32h750xx.s
-
-#######################################
-# binaries
-#######################################
 PREFIX = arm-none-eabi-
-# The gcc compiler bin path can be either defined in make command via GCC_PATH variable (> make GCC_PATH=xxx)
-# either it can be added to the PATH environment variable.
-ifdef GCC_PATH
-CC = $(GCC_PATH)/$(PREFIX)gcc
-AS = $(GCC_PATH)/$(PREFIX)gcc -x assembler-with-cpp
-CP = $(GCC_PATH)/$(PREFIX)objcopy
-SZ = $(GCC_PATH)/$(PREFIX)size
-else
+
 CC = $(PREFIX)gcc
 AS = $(PREFIX)gcc -x assembler-with-cpp
 CP = $(PREFIX)objcopy
 SZ = $(PREFIX)size
-endif
+
 HEX = $(CP) -O ihex
 BIN = $(CP) -O binary -S
 
-#######################################
-# CFLAGS
-#######################################
-# cpu
 CPU = -mcpu=cortex-m7
-
-# fpu
 FPU = -mfpu=fpv5-d16
-
-# float-abi
 FLOAT-ABI = -mfloat-abi=hard
-
-# mcu
 MCU = $(CPU) -mthumb $(FPU) $(FLOAT-ABI)
 
-# macros for gcc
-# AS defines
-AS_DEFS =
-
-# C defines
-C_DEFS =  \
+CFLAGS +=  \
 -DUSE_HAL_DRIVER \
 -DSTM32H750xx \
 -DUSE_HAL_DRIVER \
 -DSTM32H750xx
 
-
-# AS includes
-AS_INCLUDES =
-
-C_INCLUDES = \
--I$(SYSTEM_FILES_DIR)/ \
+CFLAGS += \
+-Icore/ \
 -I$(LIBDAISY_DIR) \
 -I$(LIBDAISY_DIR)/Drivers/CMSIS/Include/ \
 -I$(LIBDAISY_DIR)/Drivers/CMSIS/Device/ST/STM32H7xx/Include \
 -I$(LIBDAISY_DIR)/Drivers/STM32H7xx_HAL_Driver/Inc/ \
 -I$(DAISYSP_DIR) \
 
-
-# compile gcc flags
-ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
-
-CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
+ASFLAGS += $(MCU) -O2 -Wall -fdata-sections -ffunction-sections
+CFLAGS += $(MCU) -O2 -Wall -fdata-sections -ffunction-sections
 
 ifeq ($(DEBUG), 1)
 CFLAGS += -g -gdwarf-2
 endif
 
-# Generate dependency information
-CFLAGS += -MMD -MP -MF"$(@:%.o=%.d)"
+LDSCRIPT = STM32H750IB_flash.lds
 
-#######################################
-# LDFLAGS
-#######################################
-# link script
-LDSCRIPT = $(SYSTEM_FILES_DIR)/STM32H750IB_flash.lds
-
-# libraries
 LIBS = -ldaisy -lc -lm -lnosys
-LIBDIR = -L$(LIBDAISY_DIR)/build -L$(DAISYSP_DIR)/build
-LDFLAGS = $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBDIR) $(LIBS) -Wl,-Map=$(BUILD_DIR)/$(TARGET).map,--cref -Wl,--gc-sections
+LDFLAGS += -L$(LIBDAISY_DIR)/build -L$(DAISYSP_DIR)/build
+LDFLAGS += $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBS) -Wl,--gc-sections
 
-# default action: build all
-all: $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex $(BUILD_DIR)/$(TARGET).bin
+all: $(TARGET).elf $(TARGET).hex $(TARGET).bin
 
-#######################################
-# build the application
-#######################################
-# list of objects
-OBJECTS = $(addprefix $(BUILD_DIR)/,$(notdir $(C_SOURCES:.c=.o)))
-vpath %.c $(sort $(dir $(C_SOURCES)))
-# list of ASM program objects
-OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
-vpath %.s $(sort $(dir $(ASM_SOURCES)))
+OBJECTS += reverbsc.o dcblock.o system_stm32h7xx.o verb.o
+OBJECTS += startup_stm32h750xx.o
 
-$(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR)
-	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
+%.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/%.o: %.s Makefile | $(BUILD_DIR)
+%.o: %.s
 	$(AS) -c $(CFLAGS) $< -o $@
 
-$(BUILD_DIR)/$(TARGET).elf: $(OBJECTS) Makefile
+$(TARGET).elf: $(OBJECTS) Makefile
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 	$(SZ) $@
 
-$(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
+%.hex: %.elf
 	$(HEX) $< $@
 
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
+%.bin: %.elf
 	$(BIN) $< $@
 
-$(BUILD_DIR):
-	mkdir $@
-
-#######################################
-# clean up
-#######################################
 clean:
-	-rm -fR $(BUILD_DIR)
+	$(RM) -r $(BUILD_DIR)
+	$(RM) -r $(OBJECTS)
+	$(RM) -r $(TARGET).bin
+	$(RM) -r $(TARGET).hex
+	$(RM) -r $(TARGET).elf
 
-#######################################
-# openocd recipes
-#######################################
-
-openocd:
-	$(OCD) -s $(OCD_DIR) $(OCDFLAGS)
-
-debug:
-	@if ! nc -z localhost 3333; then \
-        echo "\n\t[Error] OpenOCD is not running! Start it with: 'make openocd'\n"; exit 1; \
-    else \
-        $(GDB)  -ex "target extended localhost:3333" \
-            -ex "monitor arm semihosting enable" \
-            -ex "monitor reset halt" \
-            -ex "load" \
-            -ex "monitor reset init" \
-            $(GDBFLAGS) build/$(TARGET).elf; \
-    fi
-
-debug_client:
-	ddd --eval-command="target remote localhost:3333" --debugger $(GDB) $(TARGET_ELF)
-
-program:
-	$(OCD) -s $(OCD_DIR) $(OCDFLAGS) \
-		-c "program ./build/$(TARGET).elf verify reset exit"
-
-#######################################
-# dfu-util
-#######################################
-
-program-dfu:
-	dfu-util -a 0 -s $(FLASH_ADDRESS):leave -D $(BUILD_DIR)/$(TARGET_BIN)
-
-#######################################
-# dependencies
-#######################################
--include $(wildcard $(BUILD_DIR)/*.d)
-
-# *** EOF ***
+flash:
+	dfu-util -a 0 -s $(FLASH_ADDRESS):leave -D $(TARGET).bin
