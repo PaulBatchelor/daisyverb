@@ -51,8 +51,8 @@ LDFLAGS += $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBS) -Wl,--gc-sections
 
 all: $(TARGET).elf $(TARGET).hex $(TARGET).bin
 
-OBJECTS += reverbsc.o dcblock.o system_stm32h7xx.o verb.o
-OBJECTS += startup_stm32h750xx.o
+OBJ += reverbsc.o dcblock.o system_stm32h7xx.o verb.o
+OBJ += startup_stm32h750xx.o
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $< -o $@
@@ -60,8 +60,8 @@ OBJECTS += startup_stm32h750xx.o
 %.o: %.s
 	$(AS) -c $(CFLAGS) $< -o $@
 
-$(TARGET).elf: $(OBJECTS) Makefile
-	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+$(TARGET).elf: $(OBJ) Makefile
+	$(CC) $(OBJ) $(LDFLAGS) -o $@
 	$(SZ) $@
 
 %.hex: %.elf
@@ -71,8 +71,7 @@ $(TARGET).elf: $(OBJECTS) Makefile
 	$(BIN) $< $@
 
 clean:
-	$(RM) -r $(BUILD_DIR)
-	$(RM) -r $(OBJECTS)
+	$(RM) -r $(OBJ)
 	$(RM) -r $(TARGET).bin
 	$(RM) -r $(TARGET).hex
 	$(RM) -r $(TARGET).elf
