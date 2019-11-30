@@ -1,4 +1,6 @@
-#include <stm32h7xx_hal.h>
+#include "stm32h7xx_hal.h"
+#include "core_hw.h"
+#include "gpio.h"
 #include "switch.h"
 
 void dsy_switch_init(dsy_switch_t *sw)
