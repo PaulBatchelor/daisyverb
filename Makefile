@@ -2,8 +2,8 @@ OBJ += reverbsc.o dcblock.o system_stm32h7xx.o verb.o
 OBJ += startup_stm32h750xx.o
 
 MODULES = \
-codec_pcm3060 \
-codec_wm8731 \
+pcm3060 \
+wm8731 \
 dma \
 adc \
 audio \

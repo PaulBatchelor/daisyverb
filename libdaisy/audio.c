@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include "util.h"
 #include "audio.h"
-#include "codec_pcm3060.h"
-#include "codec_wm8731.h"
+#include "pcm3060.h"
+#include "wm8731.h"
 #include "stm32h7xx_hal.h"
 #include "dma.h"
 

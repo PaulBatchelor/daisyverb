@@ -1,5 +1,4 @@
-#include "codec_pcm3060.h"
-//#define CODEC_DEVICE_ADDR (0b10001100)
+#include "pcm3060.h"
 #define CODEC_DEVICE_ADDR	0x8c
 #define REGISTER_MODE1		0x40
 #define DAC_POWERSAVE_CTRL	(4)
