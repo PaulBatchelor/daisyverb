@@ -1,5 +1,4 @@
 #include "sai.h"
-#include "libdaisy.h"
 #include "dma.h"
 
 SAI_HandleTypeDef hsai_BlockA1;

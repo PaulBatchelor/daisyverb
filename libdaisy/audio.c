@@ -1,5 +1,6 @@
 #include <string.h>
-#include "libdaisy.h"
+#include <stdint.h>
+#include "util.h"
 #include "audio.h"
 #include "codec_pcm3060.h"
 #include "codec_wm8731.h"

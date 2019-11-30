@@ -1,6 +1,6 @@
 #include "reverbsc.h"
 #include "dcblock.h"
-#include "libdaisy.h"
+#include "daisy.h"
 
 typedef struct
 {

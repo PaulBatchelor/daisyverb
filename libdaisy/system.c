@@ -1,5 +1,5 @@
 #include <stm32h7xx_hal.h>
-#include "libdaisy.h"
+#include <stdint.h>
 #include "dma.h"
 
 // Jump related stuff

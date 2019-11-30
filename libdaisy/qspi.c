@@ -1,5 +1,5 @@
-//#include "dsy_qspi.h"
-#include "libdaisy.h"
+#include "gpio.h"
+#include "qspi.h"
 #include "stm32h7xx_hal.h"
 #include "IS25LP080D.h"
 #include "IS25LP064A.h"

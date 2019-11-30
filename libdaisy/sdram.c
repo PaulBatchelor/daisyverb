@@ -1,5 +1,6 @@
-#include <stm32h7xx_hal.h>
-#include "libdaisy.h"
+#include "stm32h7xx_hal.h"
+#include "gpio.h"
+#include "sdram.h"
 
 // TODO:
 // - Consider alternative to libdaisy.h inclusion for board specific details.
