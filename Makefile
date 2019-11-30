@@ -4,18 +4,18 @@ OBJ += startup_stm32h750xx.o
 MODULES = \
 codec_pcm3060 \
 codec_wm8731 \
-dsy_dma \
-dsy_adc \
-dsy_audio \
-dsy_leddriver \
-dsy_qspi \
-dsy_sdram \
-dsy_system \
-dsy_i2c \
-dsy_sai \
-dsy_gpio \
-dsy_dac \
-dsy_switch \
+dma \
+adc \
+audio \
+leddriver \
+qspi \
+sdram \
+system \
+i2c \
+sai \
+gpio \
+dac \
+switch \
 
 C_SOURCES += $(addprefix libdaisy/, $(addsuffix .c, $(MODULES)))
 

@@ -1,4 +1,4 @@
-#include "dsy_gpio.h"
+#include "gpio.h"
 #include "stm32h7xx_hal.h"
 
 void	dsy_gpio_init(dsy_gpio_t *p) 

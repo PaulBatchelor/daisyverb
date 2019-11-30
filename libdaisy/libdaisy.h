@@ -40,22 +40,22 @@ FORCE_INLINE float s242f(int32_t x)
 	x = (x ^ S24SIGN) - S24SIGN; //sign extend aka ((x<<8)>>8)
 	return (float)x * S242F_SCALE;
 }
-FORCE_INLINE int32_t f2s24(float x) 
+FORCE_INLINE int32_t f2s24(float x)
 {
 	x = x <= FBIPMIN ? FBIPMIN : x;
 	x = x >= FBIPMAX ? FBIPMAX : x;
 	return (int32_t)(x * F2S24_SCALE);
 }
 
-FORCE_INLINE float cube(float x) 
+FORCE_INLINE float cube(float x)
 {
 	return (x * x) * x;
 }
 
 
 // Always include
-#include "dsy_system.h" 
-#include "dsy_core_hw.h"
+#include "system.h"
+#include "core_hw.h"
 
 //enum
 //{
@@ -77,27 +77,27 @@ FORCE_INLINE float cube(float x)
 
 
 #ifdef DSY_USE_QSPI_DRV
-#include "dsy_qspi.h"
+#include "qspi.h"
 #endif
 #ifdef DSY_USE_SDRAM_DRV
-#include "dsy_sdram.h"
+#include "sdram.h"
 #endif
 #ifdef DSY_USE_AUDIO_DRV
-#include "dsy_audio.h"
+#include "audio.h"
 #endif
 #ifdef DSY_USE_ADC_DRV
-#include "dsy_adc.h"
+#include "adc.h"
 #endif
 #ifdef DSY_USE_DAC_DRV
-#include "dsy_dac.h"
+#include "dac.h"
 #endif
 #ifdef DSY_USE_LEDDRIVER_DRV
-#include "dsy_leddriver.h"
+#include "leddriver.h"
 #endif
 
-#include "dsy_sai.h"
-#include "dsy_i2c.h"
-#include "dsy_gpio.h"
-#include "dsy_switch.h"
+#include "sai.h"
+#include "i2c.h"
+#include "gpio.h"
+#include "switch.h"
 
 #endif

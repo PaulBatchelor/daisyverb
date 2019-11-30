@@ -7,7 +7,7 @@ extern "C"
 #endif
 #include <stdint.h>
 #include <stdlib.h>
-#include "dsy_core_hw.h"
+#include "core_hw.h"
 
 	// For now this Initializes all 8 of the specific ADC pins for Daisy Seed.
 	// I'd like to make the following things easily configurable:
