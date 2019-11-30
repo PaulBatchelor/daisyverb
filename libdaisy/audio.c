@@ -1,18 +1,58 @@
 #include <string.h>
 #include <stdint.h>
-#include "util.h"
 #include "audio.h"
 #include "pcm3060.h"
 #include "wm8731.h"
 #include "stm32h7xx_hal.h"
 #include "dma.h"
 
-//#define DSY_PROFILE_AUDIO_CALLBACK 1
+#define DSY_MIN(in, mn) (in <= mn ? in : mn)
+#define DSY_MAX(in, mx) (in >= mx ? in : mx)
+#define DSY_CLAMP(in, mn, mx) (DSY_MIN(DSY_MAX(in, mn), mx))
+
+#define FBIPMAX 0.999985f	//close to 1.0f-LSB at 16 bit
+#define FBIPMIN (-FBIPMAX)
+#define S162F_SCALE 3.0517578125e-05f
+#define F2S16_SCALE 32767.0f
+#define F2S24_SCALE 8388608.0f
+#define S242F_SCALE 1.192092896e-07f
+#define S24SIGN 0x800000
+
+float s162f(int16_t x)
+{
+	return (float)x * S162F_SCALE;
+}
+
+int16_t f2s16(float x)
+{
+	x = x <= FBIPMIN ? FBIPMIN : x;
+	x = x >= FBIPMAX ? FBIPMAX : x;
+	return (int16_t)(x * F2S16_SCALE);
+}
+
+float s242f(int32_t x)
+{
+	x = (x ^ S24SIGN) - S24SIGN; //sign extend aka ((x<<8)>>8)
+	return (float)x * S242F_SCALE;
+}
+
+int32_t f2s24(float x)
+{
+	x = x <= FBIPMIN ? FBIPMIN : x;
+	x = x >= FBIPMAX ? FBIPMAX : x;
+	return (int32_t)(x * F2S24_SCALE);
+}
+
+float cube(float x)
+{
+	return (x * x) * x;
+}
+
 
 #ifdef DSY_PROFILE_AUDIO_CALLBACK
-// Initialize Gate Output GPIO (only for timing in this case)
 #define PROFILE_GPIO_PIN GPIO_PIN_10
 #define PROFILE_GPIO_PORT GPIOG
+
 static void init_gpio()
 {
 	GPIO_InitTypeDef ginit;
@@ -38,7 +78,7 @@ typedef struct
 static et_audio_t audio_handle;
 static et_audio_t audio_handle_ext;
 
-static FORCE_INLINE et_audio_t* get_audio_from_sai(SAI_HandleTypeDef* hsai)
+static et_audio_t* get_audio_from_sai(SAI_HandleTypeDef* hsai)
 {
 	return (hsai->Instance == SAI1_Block_A) ? &audio_handle : &audio_handle_ext;
 }
