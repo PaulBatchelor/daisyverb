@@ -8,7 +8,6 @@
 #include "sdram.h"
 #include "adc.h"
 #include "dac.h"
-#include "leddriver.h"
 
 #include "sai.h"
 #include "i2c.h"
@@ -16,5 +15,6 @@
 #include "switch.h"
 
 #include "audio.h"
+#include "leddriver.h"
 
 #endif

@@ -6,7 +6,6 @@ extern "C"
 {
 #endif
 #include <stdint.h>
-#include "i2c.h"
 
 	// TODO: Abstract the colors of this driver.
 
