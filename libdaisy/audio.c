@@ -1,10 +1,14 @@
 #include <string.h>
 #include <stdint.h>
-#include "audio.h"
+#include <stddef.h>
+
+#include "sai.h"
+#include "i2c.h"
 #include "pcm3060.h"
 #include "wm8731.h"
 #include "stm32h7xx_hal.h"
 #include "dma.h"
+#include "audio.h"
 
 #define DSY_MIN(in, mn) (in <= mn ? in : mn)
 #define DSY_MAX(in, mx) (in >= mx ? in : mx)
@@ -52,7 +56,6 @@ float cube(float x)
 #ifdef DSY_PROFILE_AUDIO_CALLBACK
 #define PROFILE_GPIO_PIN GPIO_PIN_10
 #define PROFILE_GPIO_PORT GPIOG
-
 static void init_gpio()
 {
 	GPIO_InitTypeDef ginit;
@@ -135,48 +138,52 @@ void dsy_audio_init(dsy_sai_handle_t* sai_handle, dsy_i2c_handle_t* dev0_i2c, ds
 	dsy_sai_init_from_handle(sai_handle);
 	dsy_i2c_init(dev0_i2c);
 	dsy_i2c_init(dev1_i2c);
-	if(intext == DSY_AUDIO_INIT_SAI1 || intext == DSY_AUDIO_INIT_BOTH)
-	{
+
+	if(intext == DSY_AUDIO_INIT_SAI1 || intext == DSY_AUDIO_INIT_BOTH) {
+        size_t i;
+		uint8_t mcu_is_master =
+            sai_handle->sync_config[DSY_SAI_1] ==
+            DSY_AUDIO_SYNC_MASTER ? 1 : 0;
+
 		audio_handle.device = dev0;
-		uint8_t mcu_is_master = sai_handle->sync_config[DSY_SAI_1] == DSY_AUDIO_SYNC_MASTER ? 1 : 0;
-		if(dev0 == DSY_AUDIO_DEVICE_WM8731) 
-		{
+		if(dev0 == DSY_AUDIO_DEVICE_WM8731) {
 			codec_wm8731_init(hi2c_int, mcu_is_master, 48000.0f, 16);
+		} else if(dev0 == DSY_AUDIO_DEVICE_PCM3060) {
 		}
-		else if(dev0 == DSY_AUDIO_DEVICE_PCM3060)
-		{
-			
-		}
-		for(size_t i = 0; i < DSY_AUDIO_DMA_BUFFER_SIZE; i++)
-		{
+
+		for(i = 0; i < DSY_AUDIO_DMA_BUFFER_SIZE; i++) {
 			audio_handle.dma_buffer_rx[i] = 0;
 			audio_handle.dma_buffer_tx[i] = 0;
 		}
-		for(size_t i = 0; i < DSY_AUDIO_BLOCK_SIZE; i++)
-		{
+
+		for(i = 0; i < DSY_AUDIO_BLOCK_SIZE; i++) {
 			audio_handle.in[i]  = 0.0f;
 			audio_handle.out[i] = 0.0f;
 		}
+
 		audio_handle.offset = 0;
 	}
-	if(intext == DSY_AUDIO_INIT_SAI2 || intext == DSY_AUDIO_INIT_BOTH) 
-	{
+	if(intext == DSY_AUDIO_INIT_SAI2 ||
+       intext == DSY_AUDIO_INIT_BOTH) {
+		uint8_t mcu_is_master;
+        size_t i;
 		audio_handle_ext.device = dev1;
-		uint8_t mcu_is_master = sai_handle->sync_config[DSY_SAI_2] == DSY_AUDIO_SYNC_MASTER ? 1 : 0;
-		if(dev1 == DSY_AUDIO_DEVICE_WM8731)
-		{
+		mcu_is_master =
+            sai_handle->sync_config[DSY_SAI_2] ==
+            DSY_AUDIO_SYNC_MASTER ? 1 : 0;
+
+		if(dev1 == DSY_AUDIO_DEVICE_WM8731) {
 			codec_wm8731_init(hi2c_ext, mcu_is_master, 48000.0f, 16);
+		} else if(dev1 == DSY_AUDIO_DEVICE_PCM3060) {
+            /* do nothing */
 		}
-		else if(dev1 == DSY_AUDIO_DEVICE_PCM3060)
-		{
-		}
-		for(size_t i = 0; i < DSY_AUDIO_DMA_BUFFER_SIZE; i++)
-		{
+
+		for(i = 0; i < DSY_AUDIO_DMA_BUFFER_SIZE; i++) {
 			audio_handle_ext.dma_buffer_rx[i] = 0;
 			audio_handle_ext.dma_buffer_tx[i] = 0;
 		}
-		for(size_t i = 0; i < DSY_AUDIO_BLOCK_SIZE; i++)
-		{
+
+		for(i = 0; i < DSY_AUDIO_BLOCK_SIZE; i++) {
 			audio_handle_ext.in[i]  = 0.0f;
 			audio_handle_ext.out[i] = 0.0f;
 		}
@@ -188,42 +195,36 @@ void dsy_audio_init(dsy_sai_handle_t* sai_handle, dsy_i2c_handle_t* dev0_i2c, ds
 	init_gpio();
 	#endif
 #ifdef __USBD_AUDIO_IF_H__
-	audio_start(); // start audio callbacks, and then we'll see if it works or not...
+	audio_start();
 #endif
 }
 
 void dsy_audio_set_callback(uint8_t intext, audio_callback cb)
 {
-	if(intext == DSY_AUDIO_INTERNAL)
-	{
+	if(intext == DSY_AUDIO_INTERNAL) {
 		audio_handle.callback = cb;
-	}
-	else
-	{
+	} else {
 		audio_handle_ext.callback = cb;
 	}
 }
 
 void dsy_audio_start(uint8_t intext)
 {
-	if(intext == DSY_AUDIO_INTERNAL)
-	{
-		HAL_SAI_Receive_DMA(&hsai_BlockA1,
-							(uint8_t*)audio_handle.dma_buffer_rx,
-							DSY_AUDIO_DMA_BUFFER_SIZE);
-		HAL_SAI_Transmit_DMA(&hsai_BlockB1,
-							 (uint8_t*)audio_handle.dma_buffer_tx,
-							 DSY_AUDIO_DMA_BUFFER_SIZE);
-	}
-	else
-	{
-		HAL_SAI_Receive_DMA(&hsai_BlockA2,
-							(uint8_t*)audio_handle_ext.dma_buffer_rx,
-							DSY_AUDIO_DMA_BUFFER_SIZE);
-		HAL_SAI_Transmit_DMA(&hsai_BlockB2,
-							 (uint8_t*)audio_handle_ext.dma_buffer_tx,
-							 DSY_AUDIO_DMA_BUFFER_SIZE);
-	}
+    if(intext == DSY_AUDIO_INTERNAL) {
+        HAL_SAI_Receive_DMA(&hsai_BlockA1,
+                            (uint8_t*)audio_handle.dma_buffer_rx,
+                            DSY_AUDIO_DMA_BUFFER_SIZE);
+        HAL_SAI_Transmit_DMA(&hsai_BlockB1,
+                             (uint8_t*)audio_handle.dma_buffer_tx,
+                             DSY_AUDIO_DMA_BUFFER_SIZE);
+    } else {
+        HAL_SAI_Receive_DMA(&hsai_BlockA2,
+                            (uint8_t*)audio_handle_ext.dma_buffer_rx,
+                            DSY_AUDIO_DMA_BUFFER_SIZE);
+        HAL_SAI_Transmit_DMA(&hsai_BlockB2,
+                             (uint8_t*)audio_handle_ext.dma_buffer_tx,
+                             DSY_AUDIO_DMA_BUFFER_SIZE);
+    }
 }
 
 void audio_stop(uint8_t intext)
@@ -232,46 +233,40 @@ void audio_stop(uint8_t intext)
 	{
 		HAL_SAI_DMAStop(&hsai_BlockA1);
 		HAL_SAI_DMAStop(&hsai_BlockB1);
-	}
-	else
-	{
+	} else {
 		HAL_SAI_DMAStop(&hsai_BlockA2);
 		HAL_SAI_DMAStop(&hsai_BlockB2);
 	}
 }
 
-// If the device supports hardware bypass, enter that mode.
-void dsy_audio_enter_bypass(uint8_t intext) 
+/* If the device supports hardware bypass, enter that mode. */
+void dsy_audio_enter_bypass(uint8_t intext)
 {
-	if(intext == DSY_AUDIO_INTERNAL) 
-	{
-		switch(audio_handle.device)
-		{
-			case DSY_AUDIO_DEVICE_WM8731: 
-				codec_wm8731_enter_bypass(audio_handle.device_control_hi2c); 
+	if(intext == DSY_AUDIO_INTERNAL) {
+		switch(audio_handle.device) {
+			case DSY_AUDIO_DEVICE_WM8731:
+				codec_wm8731_enter_bypass(audio_handle.device_control_hi2c);
 				break;
 			default: break;
 		}
 	}
 }
 
-// If the device supports hardware bypass, exit that mode.
-void dsy_audio_exit_bypass(uint8_t intext) 
+/* If the device supports hardware bypass, exit that mode. */
+void dsy_audio_exit_bypass(uint8_t intext)
 {
-	if(intext == DSY_AUDIO_INTERNAL) 
-	{
-		switch(audio_handle.device)
-		{
-			case DSY_AUDIO_DEVICE_WM8731: 
-				// TODO: Fix this, it doesn't work
-				codec_wm8731_exit_bypass(audio_handle.device_control_hi2c); 
+	if(intext == DSY_AUDIO_INTERNAL) {
+		switch(audio_handle.device) {
+			case DSY_AUDIO_DEVICE_WM8731:
+				/* TODO: Fix this, it doesn't work */
+				codec_wm8731_exit_bypass(audio_handle.device_control_hi2c);
 				break;
 			default: break;
 		}
 	}
 }
-// Static Functions Below
 
+/* Static Functions Below */
 static void internal_callback(SAI_HandleTypeDef* hsai, size_t offset)
 {
 	#ifdef DSY_PROFILE_AUDIO_CALLBACK
@@ -282,17 +277,12 @@ static void internal_callback(SAI_HandleTypeDef* hsai, size_t offset)
 	const int32_t* ini  = ah->dma_buffer_rx + offset;
 	float*		   inf  = ah->in;
 	const float*   endi = ah->in + ah->block_size;
-	if(ah->bitdepth == DSY_AUDIO_BITDEPTH_24)
-	{
-		while(inf != endi)
-		{
+	if(ah->bitdepth == DSY_AUDIO_BITDEPTH_24) {
+		while(inf != endi) {
 			*inf++ = s242f(*ini++);
 		}
-	}
-	else
-	{
-		while(inf != endi) 
-		{
+	} else {
+		while(inf != endi) {
 			*inf++ = s162f(*ini++);
 		}
 	}
@@ -307,11 +297,8 @@ static void internal_callback(SAI_HandleTypeDef* hsai, size_t offset)
 		{
 			*outi++ = f2s24(*outf++);
 		}
-	}
-	else
-	{
-		while(outf != endo)
-		{
+	} else {
+		while(outf != endo) {
 			*outi++ = f2s16(*outf++);
 		}
 	}
@@ -320,7 +307,7 @@ static void internal_callback(SAI_HandleTypeDef* hsai, size_t offset)
 	#endif
 }
 
-// DMA Callbacks
+/* DMA Callbacks */
 void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef* hsai)
 {
 	internal_callback(hsai, 0);

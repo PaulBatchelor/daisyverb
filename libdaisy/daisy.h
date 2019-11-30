@@ -6,7 +6,6 @@
 
 #include "qspi.h"
 #include "sdram.h"
-#include "audio.h"
 #include "adc.h"
 #include "dac.h"
 #include "leddriver.h"
@@ -15,5 +14,7 @@
 #include "i2c.h"
 #include "gpio.h"
 #include "switch.h"
+
+#include "audio.h"
 
 #endif
