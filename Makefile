@@ -17,60 +17,60 @@ gpio \
 dac \
 switch \
 
-C_SOURCES += $(addprefix libdaisy/, $(addsuffix .c, $(MODULES)))
+C_SOURCES += $(addprefix daisy/, $(addsuffix .c, $(MODULES)))
 
 C_SOURCES += \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_fmc.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sdram.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_qspi.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rng.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_sdmmc.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_delayblock.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c \
-libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_fmc.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sdram.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_qspi.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rng.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_sdmmc.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_delayblock.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c \
+daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c \
 
 OBJ += $(C_SOURCES:.c=.o)
 
-STARTUP_PATH = libdaisy/drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc
+STARTUP_PATH = daisy/drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc
 
 TARGET = verb
 CHIPSET = stm32h7x
 
 FLASH_ADDRESS = 0x08000000
 
-LIBDAISY_DIR = libdaisy
+LIBDAISY_DIR = daisy
 
 PREFIX = arm-none-eabi-
 
