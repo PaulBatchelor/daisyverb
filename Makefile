@@ -20,50 +20,50 @@ switch \
 C_SOURCES += $(addprefix libdaisy/, $(addsuffix .c, $(MODULES)))
 
 C_SOURCES += \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_fmc.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sdram.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_qspi.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rng.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_sdmmc.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_delayblock.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c \
-libdaisy/Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_fmc.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sdram.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_qspi.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rng.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_sdmmc.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_delayblock.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c \
+libdaisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c \
 
 OBJ += $(C_SOURCES:.c=.o)
 
-STARTUP_PATH = libdaisy/Drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc
+STARTUP_PATH = libdaisy/drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc
 
 TARGET = verb
 CHIPSET = stm32h7x
@@ -96,9 +96,9 @@ CFLAGS +=  \
 CFLAGS += \
 -Icore/ \
 -I$(LIBDAISY_DIR) \
--I$(LIBDAISY_DIR)/Drivers/CMSIS/Include/ \
--I$(LIBDAISY_DIR)/Drivers/CMSIS/Device/ST/STM32H7xx/Include \
--I$(LIBDAISY_DIR)/Drivers/STM32H7xx_HAL_Driver/Inc/ \
+-I$(LIBDAISY_DIR)/drivers/CMSIS/Include/ \
+-I$(LIBDAISY_DIR)/drivers/CMSIS/Device/ST/STM32H7xx/Include \
+-I$(LIBDAISY_DIR)/drivers/STM32H7xx_HAL_Driver/Inc/ \
 
 ASFLAGS += $(MCU) -O2 -Wall -fdata-sections -ffunction-sections
 CFLAGS += $(MCU) -O2 -Wall -fdata-sections -ffunction-sections
