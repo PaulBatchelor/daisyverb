@@ -1,6 +1,7 @@
 #ifndef DSY_DAISY_H
 #define DSY_DAISY_H
 
+#include "stm32h7xx_hal.h"
 #include "system.h"
 #include "core_hw.h"
 

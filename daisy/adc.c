@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include "core_hw.h"
 #include "stm32h7xx_hal.h"
+#include "core_hw.h"
 #include "adc.h"
 
 #define DSY_ADC_MAX_CHANNELS DSY_ADC_PIN_LAST

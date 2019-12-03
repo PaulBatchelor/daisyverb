@@ -1,8 +1,8 @@
 #include <stdint.h>
 
+#include "stm32h7xx_hal.h"
 #include "core_hw.h"
 #include "gpio.h"
-#include "stm32h7xx_hal.h"
 #include "IS25LP080D.h"
 #include "IS25LP064A.h"
 #include "qspi.h"

@@ -1,12 +1,8 @@
 #pragma once
 #ifndef DSY_CORE_HW_H
 #define DSY_CORE_HW_H
-#include <stdint.h>
-#include "stm32h7xx_hal.h"
-		 
 
-typedef enum
-{
+typedef enum {
 	DSY_GPIOA,
 	DSY_GPIOB,
 	DSY_GPIOC,

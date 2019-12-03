@@ -1,6 +1,6 @@
+#include "stm32h7xx_hal.h"
 #include "core_hw.h"
 #include "dac.h"
-#include "stm32h7xx_hal.h"
 
 typedef struct {
 	DAC_HandleTypeDef hdac1; // ST HAL DAC handle

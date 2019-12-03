@@ -3,27 +3,17 @@
 #include "gpio.h"
 #include "sdram.h"
 
-// TODO:
-// - Consider alternative to libdaisy.h inclusion for board specific details.
-// - Optimize Timing Variables, etc. for Maximum Speed.
-
-// For now all configuration is done specifically for
-//    the AS4C16M32MSA-6BIN 64MB SDRAM from Alliance Memory.
-
-
-//#include "fmc.h"
 #define SDRAM_MODEREG_BURST_LENGTH_2 ((1 << 0))
 #define SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL ((0 << 3))
-#define SDRAM_MODEREG_CAS_LATENCY_3 ((1 << 4) | (1 << 5)) 
+#define SDRAM_MODEREG_CAS_LATENCY_3 ((1 << 4) | (1 << 5))
 #define SDRAM_MODEREG_OPERATING_MODE_STANDARD  ()
 #define SDRAM_MODEREG_WRITEBURST_MODE_SINGLE ((1 << 9))
 
-typedef struct 
-{
+typedef struct {
 	uint8_t board;
 	SDRAM_HandleTypeDef hsdram;
 	dsy_sdram_handle_t *dsy_hsdram;
-}dsy_sdram_t;
+} dsy_sdram_t;
 
 static dsy_sdram_t dsy_sdram;
 
@@ -32,24 +22,19 @@ static uint8_t sdram_device_init();
 
 uint8_t dsy_sdram_init(dsy_sdram_handle_t *dsy_hsdram)
 {
-	//dsy_sdram.board = board;
 	dsy_sdram.dsy_hsdram = dsy_hsdram;
-	if(dsy_sdram.dsy_hsdram->state == DSY_SDRAM_STATE_ENABLE) 
-	{
-		if (sdram_periph_init() != DSY_SDRAM_OK)
-		{
+	if(dsy_sdram.dsy_hsdram->state == DSY_SDRAM_STATE_ENABLE) {
+		if (sdram_periph_init() != DSY_SDRAM_OK) {
 			return DSY_SDRAM_ERR;
 		}
-		if (sdram_device_init() != DSY_SDRAM_OK)
-		{
+		if (sdram_device_init() != DSY_SDRAM_OK) {
 			return DSY_SDRAM_ERR;
 		}
 	}
 	return DSY_SDRAM_OK;
 }
 
-static uint8_t sdram_periph_init()
-{
+static uint8_t sdram_periph_init() {
 	FMC_SDRAM_TimingTypeDef SdramTiming = { 0 };
 	dsy_sdram.hsdram.Instance = FMC_SDRAM_DEVICE;
 	// Init
@@ -72,16 +57,13 @@ static uint8_t sdram_periph_init()
 	SdramTiming.RPDelay = 2;
 	SdramTiming.RCDDelay = 2;
 
-	if (HAL_SDRAM_Init(&dsy_sdram.hsdram, &SdramTiming) != HAL_OK)
-	{
-		//Error_Handler();
+	if (HAL_SDRAM_Init(&dsy_sdram.hsdram, &SdramTiming) != HAL_OK) {
 		return DSY_SDRAM_ERR;
 	}
 	return DSY_SDRAM_OK;
 }
-// For now this is
-static uint8_t sdram_device_init()
-{
+
+static uint8_t sdram_device_init() {
 	FMC_SDRAM_CommandTypeDef Command;
 
 	__IO uint32_t tmpmrd = 0;
@@ -96,18 +78,18 @@ static uint8_t sdram_device_init()
 
 	/* Step 4: Insert 100 ms delay */
 	HAL_Delay(100);
-			
 
-	/* Step 5: Configure a PALL (precharge all) command */ 
+
+	/* Step 5: Configure a PALL (precharge all) command */
 	Command.CommandMode            = FMC_SDRAM_CMD_PALL;
 	Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
 	Command.AutoRefreshNumber      = 1;
 	Command.ModeRegisterDefinition = 0;
 
 	/* Send the command */
-	HAL_SDRAM_SendCommand(&dsy_sdram.hsdram, &Command, 0x1000);  
+	HAL_SDRAM_SendCommand(&dsy_sdram.hsdram, &Command, 0x1000);
 
-	/* Step 6 : Configure a Auto-Refresh command */ 
+	/* Step 6 : Configure a Auto-Refresh command */
 	Command.CommandMode            = FMC_SDRAM_CMD_AUTOREFRESH_MODE;
 	Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
 	Command.AutoRefreshNumber      = 4;
@@ -123,9 +105,9 @@ static uint8_t sdram_device_init()
 	                   SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;
 	                   //SDRAM_MODEREG_OPERATING_MODE_STANDARD | // Used in example, but can't find reference except for "Test Mode"
 
-	Command.CommandMode            = FMC_SDRAM_CMD_LOAD_MODE;
-	Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
-	Command.AutoRefreshNumber      = 1;
+	Command.CommandMode = FMC_SDRAM_CMD_LOAD_MODE;
+	Command.CommandTarget = FMC_SDRAM_CMD_TARGET_BANK1;
+	Command.AutoRefreshNumber = 1;
 	Command.ModeRegisterDefinition = tmpmrd;
 
 	/* Send the command */
@@ -138,8 +120,8 @@ static uint8_t sdram_device_init()
 
 static uint32_t FMC_Initialized = 0;
 
-static void HAL_FMC_MspInit(void)
-{
+static void HAL_FMC_MspInit(void) {
+    uint8_t i;
 	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 	if (FMC_Initialized) {
 		return;
@@ -156,8 +138,8 @@ static void HAL_FMC_MspInit(void)
 	// for SDNWE on some boards:
 	__HAL_RCC_GPIOC_CLK_ENABLE();
 
-  
-	/** FMC GPIO Configuration  
+
+	/** FMC GPIO Configuration
 	PE1   ------> FMC_NBL1
 	PE0   ------> FMC_NBL0
 	PG15   ------> FMC_SDNCAS
@@ -217,8 +199,8 @@ static void HAL_FMC_MspInit(void)
 	PE15   ------> FMC_D12
 	*/
 	/* GPIO_InitStruct */
-	GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_0 | GPIO_PIN_13 | GPIO_PIN_8 
-	                        | GPIO_PIN_9 | GPIO_PIN_11 | GPIO_PIN_14 | GPIO_PIN_7 
+	GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_0 | GPIO_PIN_13 | GPIO_PIN_8
+	                        | GPIO_PIN_9 | GPIO_PIN_11 | GPIO_PIN_14 | GPIO_PIN_7
 	                        | GPIO_PIN_10 | GPIO_PIN_12 | GPIO_PIN_15;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -228,7 +210,7 @@ static void HAL_FMC_MspInit(void)
 	HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
 	/* GPIO_InitStruct */
-	GPIO_InitStruct.Pin = GPIO_PIN_15 | GPIO_PIN_8 | GPIO_PIN_5 | GPIO_PIN_4 
+	GPIO_InitStruct.Pin = GPIO_PIN_15 | GPIO_PIN_8 | GPIO_PIN_5 | GPIO_PIN_4
 	                        | GPIO_PIN_2 | GPIO_PIN_1 | GPIO_PIN_0;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -238,7 +220,7 @@ static void HAL_FMC_MspInit(void)
 	HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
 	/* GPIO_InitStruct */
-	GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_15 | GPIO_PIN_14 
+	GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_15 | GPIO_PIN_14
 	                        | GPIO_PIN_10 | GPIO_PIN_9 | GPIO_PIN_8;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -248,8 +230,8 @@ static void HAL_FMC_MspInit(void)
 	HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
 	/* GPIO_InitStruct */
-	GPIO_InitStruct.Pin = GPIO_PIN_7 | GPIO_PIN_6 | GPIO_PIN_5 | GPIO_PIN_3 
-	                        | GPIO_PIN_2 | GPIO_PIN_9 | GPIO_PIN_4 | GPIO_PIN_1 
+	GPIO_InitStruct.Pin = GPIO_PIN_7 | GPIO_PIN_6 | GPIO_PIN_5 | GPIO_PIN_3
+	                        | GPIO_PIN_2 | GPIO_PIN_9 | GPIO_PIN_4 | GPIO_PIN_1
 	                        | GPIO_PIN_10 | GPIO_PIN_0;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -259,8 +241,8 @@ static void HAL_FMC_MspInit(void)
 	HAL_GPIO_Init(GPIOI, &GPIO_InitStruct);
 
 	/* GPIO_InitStruct */
-	GPIO_InitStruct.Pin = GPIO_PIN_15 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_2 
-	                        | GPIO_PIN_3 | GPIO_PIN_12 | GPIO_PIN_11 | GPIO_PIN_10 
+	GPIO_InitStruct.Pin = GPIO_PIN_15 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_2
+	                        | GPIO_PIN_3 | GPIO_PIN_12 | GPIO_PIN_11 | GPIO_PIN_10
 	                        | GPIO_PIN_8 | GPIO_PIN_9;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -270,8 +252,8 @@ static void HAL_FMC_MspInit(void)
 	HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
 
 	/* GPIO_InitStruct */
-	GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_2 | GPIO_PIN_1 | GPIO_PIN_3 
-	                        | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_13 | GPIO_PIN_12 
+	GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_2 | GPIO_PIN_1 | GPIO_PIN_3
+	                        | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_13 | GPIO_PIN_12
 	                        | GPIO_PIN_15 | GPIO_PIN_11 | GPIO_PIN_14;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -280,10 +262,8 @@ static void HAL_FMC_MspInit(void)
 
 	HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-	// Init for any pins that can be configured
-	GPIO_TypeDef *port;
-	for(uint8_t i = 0; i < DSY_SDRAM_PIN_LAST; i++) 
-	{
+	for(i = 0; i < DSY_SDRAM_PIN_LAST; i++) {
+        GPIO_TypeDef *port;
 		port = (GPIO_TypeDef*)gpio_hal_port_map[dsy_sdram.dsy_hsdram->pin_config[i].port];
 		GPIO_InitStruct.Pin
 			= gpio_hal_pin_map[dsy_sdram.dsy_hsdram->pin_config[i].pin];
@@ -293,70 +273,24 @@ static void HAL_FMC_MspInit(void)
 		GPIO_InitStruct.Alternate = GPIO_AF12_FMC; // They all seem to use this
 		HAL_GPIO_Init(port, &GPIO_InitStruct);
 	}
-
-	// This pin can change between boards (SDNWE)
-//	switch(dsy_sdram.board)
-//	{
-//	case DSY_SYS_BOARD_DAISY:
-//		/* GPIO_InitStruct */
-//		GPIO_InitStruct.Pin = GPIO_PIN_0;
-//		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-//		GPIO_InitStruct.Pull = GPIO_NOPULL;
-//		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-//		GPIO_InitStruct.Alternate = GPIO_AF12_FMC;
-//		HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-//		break;
-//	case DSY_SYS_BOARD_DAISY_SEED:
-//		/* GPIO_InitStruct */
-//		GPIO_InitStruct.Pin = GPIO_PIN_5;
-//		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-//		GPIO_InitStruct.Pull = GPIO_NOPULL;
-//		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-//		GPIO_InitStruct.Alternate = GPIO_AF12_FMC;
-//		HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
-//		break;
-//	case DSY_SYS_BOARD_AUDIO_BB:
-//		/* GPIO_InitStruct */
-//		GPIO_InitStruct.Pin = GPIO_PIN_5;
-//		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-//		GPIO_InitStruct.Pull = GPIO_NOPULL;
-//		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-//		GPIO_InitStruct.Alternate = GPIO_AF12_FMC;
-//		HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
-//		break;
-//	default:
-//		break;
-//	}
-
-	/* USER CODE BEGIN FMC_MspInit 1 */
-
-	/* USER CODE END FMC_MspInit 1 */
 }
 
 void HAL_SDRAM_MspInit(SDRAM_HandleTypeDef* sdramHandle) {
-	/* USER CODE BEGIN SDRAM_MspInit 0 */
-
-	/* USER CODE END SDRAM_MspInit 0 */
 	HAL_FMC_MspInit();
-	/* USER CODE BEGIN SDRAM_MspInit 1 */
-
-	/* USER CODE END SDRAM_MspInit 1 */
 }
 
 static uint32_t FMC_DeInitialized = 0;
 
 static void HAL_FMC_MspDeInit(void) {
-	/* USER CODE BEGIN FMC_MspDeInit 0 */
-
-	/* USER CODE END FMC_MspDeInit 0 */
 	if (FMC_DeInitialized) {
 		return;
 	}
 	FMC_DeInitialized = 1;
+
 	/* Peripheral clock enable */
 	__HAL_RCC_FMC_CLK_DISABLE();
-  
-	/** FMC GPIO Configuration  
+
+	/** FMC GPIO Configuration
 	PE1   ------> FMC_NBL1
 	PE0   ------> FMC_NBL0
 	PG15   ------> FMC_SDNCAS
@@ -417,62 +351,41 @@ static void HAL_FMC_MspDeInit(void) {
 	*/
 
 	HAL_GPIO_DeInit(GPIOE,
-		GPIO_PIN_1|GPIO_PIN_0|GPIO_PIN_13|GPIO_PIN_8 
-	                        |GPIO_PIN_9|GPIO_PIN_11|GPIO_PIN_14|GPIO_PIN_7 
+		GPIO_PIN_1|GPIO_PIN_0|GPIO_PIN_13|GPIO_PIN_8
+	                        |GPIO_PIN_9|GPIO_PIN_11|GPIO_PIN_14|GPIO_PIN_7
 	                        |GPIO_PIN_10|GPIO_PIN_12|GPIO_PIN_15);
 
 	HAL_GPIO_DeInit(GPIOG,
-		GPIO_PIN_15|GPIO_PIN_8|GPIO_PIN_5|GPIO_PIN_4 
+		GPIO_PIN_15|GPIO_PIN_8|GPIO_PIN_5|GPIO_PIN_4
 	                        |GPIO_PIN_2|GPIO_PIN_1|GPIO_PIN_0);
 
 	HAL_GPIO_DeInit(GPIOD,
-		GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_15|GPIO_PIN_14 
+		GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_15|GPIO_PIN_14
 	                        |GPIO_PIN_10|GPIO_PIN_9|GPIO_PIN_8);
 
 	HAL_GPIO_DeInit(GPIOI,
-		GPIO_PIN_7|GPIO_PIN_6|GPIO_PIN_5|GPIO_PIN_3 
-	                        |GPIO_PIN_2|GPIO_PIN_9|GPIO_PIN_4|GPIO_PIN_1 
+		GPIO_PIN_7|GPIO_PIN_6|GPIO_PIN_5|GPIO_PIN_3
+	                        |GPIO_PIN_2|GPIO_PIN_9|GPIO_PIN_4|GPIO_PIN_1
 	                        |GPIO_PIN_10|GPIO_PIN_0);
 
 	HAL_GPIO_DeInit(GPIOH,
-		GPIO_PIN_15|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_2 
-	                        |GPIO_PIN_3|GPIO_PIN_12|GPIO_PIN_11|GPIO_PIN_10 
+		GPIO_PIN_15|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_2
+	                        |GPIO_PIN_3|GPIO_PIN_12|GPIO_PIN_11|GPIO_PIN_10
 	                        |GPIO_PIN_8|GPIO_PIN_9);
 
 	HAL_GPIO_DeInit(GPIOF,
-		GPIO_PIN_0|GPIO_PIN_2|GPIO_PIN_1|GPIO_PIN_3 
-	                        |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_13|GPIO_PIN_12 
+		GPIO_PIN_0|GPIO_PIN_2|GPIO_PIN_1|GPIO_PIN_3
+	                        |GPIO_PIN_4|GPIO_PIN_5|GPIO_PIN_13|GPIO_PIN_12
 	                        |GPIO_PIN_15|GPIO_PIN_11|GPIO_PIN_14);
 
 	HAL_GPIO_DeInit(GPIOC, GPIO_PIN_0);
-
-	/* USER CODE BEGIN FMC_MspDeInit 1 */
-
-	/* USER CODE END FMC_MspDeInit 1 */
 }
 
 void HAL_SDRAM_MspDeInit(SDRAM_HandleTypeDef* sdramHandle) {
-	/* USER CODE BEGIN SDRAM_MspDeInit 0 */
-
-	/* USER CODE END SDRAM_MspDeInit 0 */
 	HAL_FMC_MspDeInit();
-	/* USER CODE BEGIN SDRAM_MspDeInit 1 */
-
-	/* USER CODE END SDRAM_MspDeInit 1 */
-}	
+}
 
 void __attribute__((constructor)) SDRAM_Init()
 {
-//	extern void *_sisdram_data, *_ssdram_data, *_esdram_data;
-//	extern void *_ssdram_bss, *_esdram_bss;
-
-//	void **pSource, **pDest;
-//	for (pSource = &_sisdram_data, pDest = &_ssdram_data; pDest != &_esdram_data; pSource++, pDest++)
-//		*pDest = *pSource;
-//
-//	for (pDest = &_ssdram_bss; pDest != &_esdram_bss; pDest++)
-//		*pDest = 0;
 
 }
-
-//Program the <project name>_QSPIFLASH.bin file to QSPIFLASH manually
