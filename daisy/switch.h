@@ -5,18 +5,19 @@
 extern "C"
 {
 #endif
-#include "core_hw.h"
-#include "gpio.h"
+/*
+ * Usage:
+ * Using the dsy_switch_state(), will work with no setup
+ * other than init.
+ * For edge, and time based functions, you'll have to call
+ * debounce() at
+ * a regular interval (i.e. 1ms)
+ * In order not to miss those events, the rising/falling
+ * edge checks should
+ * be made at the same frequency as the debounce() function.
+ */
 
-// Usage:
-// Using the dsy_switch_state(), will work with no setup other than init.
-// For edge, and time based functions, you'll have to call debounce() at 
-// a regular interval (i.e. 1ms)
-// In order not to miss those events, the rising/falling edge checks should
-// be made at the same frequency as the debounce() function.
-
-typedef enum
-{
+typedef enum {
 	DSY_SWITCH_TYPE_TOGGLE,
 	DSY_SWITCH_TYPE_MOMENTARY,
 	DSY_SWITCH_TYPE_LAST,
@@ -36,8 +37,7 @@ typedef enum
 	DSY_SWITCH_PULLDOWN,
 } dsy_switch_pull;
 
-typedef struct
-{
+typedef struct {
 	dsy_switch_type type;
 	dsy_switch_polarity polarity;
 	dsy_switch_pull		pull;

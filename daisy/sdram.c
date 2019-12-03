@@ -37,7 +37,7 @@ uint8_t dsy_sdram_init(dsy_sdram_handle_t *dsy_hsdram)
 static uint8_t sdram_periph_init() {
 	FMC_SDRAM_TimingTypeDef SdramTiming = { 0 };
 	dsy_sdram.hsdram.Instance = FMC_SDRAM_DEVICE;
-	// Init
+	/* Init */
 	dsy_sdram.hsdram.Init.SDBank = FMC_SDRAM_BANK1;
 	dsy_sdram.hsdram.Init.ColumnBitsNumber = FMC_SDRAM_COLUMN_BITS_NUM_9;
 	dsy_sdram.hsdram.Init.RowBitsNumber = FMC_SDRAM_ROW_BITS_NUM_13;
