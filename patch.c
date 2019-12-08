@@ -39,28 +39,6 @@ enum {
 	LED_LAST
 };
 
-const dsy_gpio_port seed_ports[32] = {
-	DSY_GPIOA, DSY_GPIOB, DSY_GPIOC, DSY_GPIOC,
-	DSY_GPIOC, DSY_GPIOC, DSY_GPIOD, DSY_GPIOC,
-	DSY_GPIOG, DSY_GPIOG, DSY_GPIOB, DSY_GPIOB,
-	DSY_GPIOB, DSY_GPIOB, DSY_GPIOB, DSY_GPIOB,
-	DSY_GPIOC, DSY_GPIOA, DSY_GPIOA, DSY_GPIOB,
-	DSY_GPIOA, DSY_GPIOA, DSY_GPIOC, DSY_GPIOC,
-	DSY_GPIOA, DSY_GPIOA, DSY_GPIOA, DSY_GPIOD,
-	DSY_GPIOG, DSY_GPIOA, DSY_GPIOB, DSY_GPIOB,
-};
-
-const uint8_t seed_pins[32] = {
-    8, 12, 11, 10,
-    9, 8, 7, 12,
-    10, 11, 4, 5,
-    8, 	9, 6, 7,
-    0, 1, 3, 1,
-    7, 6, 1, 5,
-    5, 4, 0, 11,
-    9, 2, 14, 15,
-};
-
 void daisy_seed_init(daisy_handle *daisy_seed)
 {
 	dsy_gpio_pin *pin_group;
