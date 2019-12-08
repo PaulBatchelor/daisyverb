@@ -1,4 +1,5 @@
 OBJ += reverbsc.o dcblock.o system_stm32h7xx.o verb.o
+OBJ += patch.o
 OBJ += startup_stm32h750xx.o
 
 MODULES = \
