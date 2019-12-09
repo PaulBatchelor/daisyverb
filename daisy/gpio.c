@@ -63,3 +63,13 @@ void dsy_gpio_toggle(dsy_gpio_t *p)
 	HAL_GPIO_TogglePin((GPIO_TypeDef *)gpio_hal_port_map[p->pin.port],
 					   gpio_hal_pin_map[p->pin.pin]);
 }
+
+void dsy_gpio_config_set(dsy_gpio_pin *config,
+                         int pos,
+                         int port,
+                         int pin)
+{
+
+	config[pos].port = port;
+	config[pos].pin = pin;
+}

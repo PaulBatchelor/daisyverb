@@ -33,6 +33,11 @@ uint8_t dsy_gpio_read(dsy_gpio_t *p);
 void dsy_gpio_write(dsy_gpio_t *p, uint8_t state);
 void dsy_gpio_toggle(dsy_gpio_t *p);
 
+void dsy_gpio_config_set(dsy_gpio_pin *config,
+                         int pos,
+                         int port,
+                         int pin);
+
 #ifdef __cplusplus
 }
 #endif
