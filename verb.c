@@ -1,6 +1,7 @@
 #include "reverbsc.h"
 #include "dcblock.h"
 #include "daisy.h"
+#include "seed.h"
 #include "patch.h"
 
 static daisy_patch patch;

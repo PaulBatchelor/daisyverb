@@ -1,5 +1,6 @@
 OBJ += reverbsc.o dcblock.o system_stm32h7xx.o verb.o
 OBJ += patch.o
+OBJ += seed.o
 OBJ += startup_stm32h750xx.o
 
 LIBDAISY_DIR = daisy
