@@ -28,4 +28,6 @@ typedef struct {
 	dsy_gpio_t gate_in1, gate_in2, gate_out;
 	daisy_handle seed;
 } daisy_patch;
+
+void daisy_patch_init(daisy_patch *p);
 #endif

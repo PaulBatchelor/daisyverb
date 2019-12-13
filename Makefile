@@ -104,7 +104,8 @@ LDSCRIPT = STM32H750IB_flash.lds
 
 LIBS = -lc -lm -lnosys
 LDFLAGS += -L$(LIBDAISY_DIR)
-LDFLAGS += $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBS) -Wl,--gc-sections
+LDFLAGS += $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBS)
+LDFLAGS += -Wl,--gc-sections
 
 all: $(TARGET).elf $(TARGET).hex $(TARGET).bin
 
@@ -125,13 +126,13 @@ $(TARGET).elf: $(OBJ)
 	@$(HEX) $< $@
 
 %.bin: %.elf
-	$(BIN) $< $@
+	@$(BIN) $< $@
 
 clean:
-	$(RM) -r $(OBJ)
-	$(RM) -r $(TARGET).bin
-	$(RM) -r $(TARGET).hex
-	$(RM) -r $(TARGET).elf
+	@$(RM) $(OBJ)
+	@$(RM) $(TARGET).bin
+	@$(RM) $(TARGET).hex
+	@$(RM) $(TARGET).elf
 
 flash:
 	dfu-util -a 0 -s $(FLASH_ADDRESS):leave -D $(TARGET).bin
