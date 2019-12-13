@@ -18,53 +18,49 @@ gpio \
 dac \
 switch \
 
-C_SOURCES += $(addprefix daisy/, $(addsuffix .c, $(MODULES)))
+CSRCS += $(addprefix daisy/, $(addsuffix .c, $(MODULES)))
+CSRCS += $(addprefix daisy/drivers/STM32H7xx_HAL_Driver/Src/, \
+	stm32h7xx_hal_pcd_ex.c \
+	stm32h7xx_ll_usb.c \
+	stm32h7xx_hal_adc.c \
+	stm32h7xx_hal_adc_ex.c \
+	stm32h7xx_hal_cortex.c \
+	stm32h7xx_hal_dac.c \
+	stm32h7xx_hal_dac_ex.c \
+	stm32h7xx_ll_fmc.c \
+	stm32h7xx_hal_sdram.c \
+	stm32h7xx_hal_i2c.c \
+	stm32h7xx_hal_i2c_ex.c \
+	stm32h7xx_hal_opamp.c \
+	stm32h7xx_hal_opamp_ex.c \
+	stm32h7xx_hal_qspi.c \
+	stm32h7xx_hal_rng.c \
+	stm32h7xx_hal_sai.c \
+	stm32h7xx_hal_sai_ex.c \
+	stm32h7xx_ll_sdmmc.c \
+	stm32h7xx_ll_delayblock.c \
+	stm32h7xx_hal_sd.c \
+	stm32h7xx_hal_sd_ex.c \
+	stm32h7xx_hal_spi.c \
+	stm32h7xx_hal_spi_ex.c \
+	stm32h7xx_hal_tim.c \
+	stm32h7xx_hal_tim_ex.c \
+	stm32h7xx_hal_uart.c \
+	stm32h7xx_hal_uart_ex.c \
+	stm32h7xx_hal_rcc.c \
+	stm32h7xx_hal_rcc_ex.c \
+	stm32h7xx_hal_flash.c \
+	stm32h7xx_hal_flash_ex.c \
+	stm32h7xx_hal_gpio.c \
+	stm32h7xx_hal_hsem.c \
+	stm32h7xx_hal_dma.c \
+	stm32h7xx_hal_dma_ex.c \
+	stm32h7xx_hal_mdma.c \
+	stm32h7xx_hal_pwr.c \
+	stm32h7xx_hal_pwr_ex.c \
+	stm32h7xx_hal.c)
 
-C_SOURCES += \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pcd_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_usb.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_adc_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_cortex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dac_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_fmc.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sdram.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_i2c_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_opamp_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_qspi.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rng.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sai_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_sdmmc.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_ll_delayblock.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_sd_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_spi_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_tim_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_rcc_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_flash_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_gpio.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_hsem.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_dma_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_mdma.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_pwr_ex.c \
-daisy/drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal.c \
-
-OBJ += $(C_SOURCES:.c=.o)
-
-STARTUP_PATH = daisy/drivers/CMSIS/Device/ST/STM32H7xx/Source/Templates/gcc
+OBJ += $(CSRCS:.c=.o)
 
 TARGET = verb
 CHIPSET = stm32h7x
@@ -113,17 +109,20 @@ LDFLAGS += $(MCU) -specs=nano.specs -T$(LDSCRIPT) $(LIBS) -Wl,--gc-sections
 all: $(TARGET).elf $(TARGET).hex $(TARGET).bin
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $< -o $@
+	@echo "${CC} $(notdir $<)"
+	@$(CC) -c $(CFLAGS) $< -o $@
 
 %.o: %.s
-	$(AS) -c $(CFLAGS) $< -o $@
+	@echo "${AS} $(notdir $<)"
+	@$(AS) -c $(CFLAGS) $< -o $@
 
-$(TARGET).elf: $(OBJ) Makefile
-	$(CC) $(OBJ) $(LDFLAGS) -o $@
-	$(SZ) $@
+$(TARGET).elf: $(OBJ)
+	@echo "Creating $@"
+	@$(CC) $(OBJ) $(LDFLAGS) -o $@
+	@$(SZ) $@
 
 %.hex: %.elf
-	$(HEX) $< $@
+	@$(HEX) $< $@
 
 %.bin: %.elf
 	$(BIN) $< $@
