@@ -386,36 +386,63 @@ void daisy_seed_init(daisy_handle *daisy_seed)
 
 void daisy_patch_init(daisy_patch *p)
 {
+	/* p->button1.pin_config.port = BUTTON_1_PORT; */
+	/* p->button1.pin_config.pin = BUTTON_1_PIN; */
+    dsy_switch_pin(&p->button1, BUTTON_1_PORT, BUTTON_1_PIN);
+	/* p->button1.pull = DSY_SWITCH_PULLUP; */
+    dsy_switch_pull(&p->button1, DSY_SWITCH_PULLUP);
+	/* p->button1.polarity = DSY_SWITCH_POLARITY_INVERTED; */
+    dsy_switch_polarity(&p->button1, DSY_SWITCH_POLARITY_INVERTED);
 
-	p->button1.pin_config.port = BUTTON_1_PORT;
-	p->button1.pin_config.pin = BUTTON_1_PIN;
-	p->button1.pull = DSY_SWITCH_PULLUP;
-	p->button1.polarity = DSY_SWITCH_POLARITY_INVERTED;
-	p->button1.type = DSY_SWITCH_TYPE_MOMENTARY;
+	/* p->button1.type = DSY_SWITCH_TYPE_MOMENTARY; */
+    dsy_switch_type(&p->button1, DSY_SWITCH_TYPE_MOMENTARY);
 
-	p->button2.pin_config.port = BUTTON_2_PORT;
-	p->button2.pin_config.pin = BUTTON_2_PIN;
-	p->button2.pull = DSY_SWITCH_PULLUP;
-	p->button2.polarity = DSY_SWITCH_POLARITY_INVERTED;
-	p->button2.type = DSY_SWITCH_TYPE_MOMENTARY;
+	/* p->button2.pin_config.port = BUTTON_2_PORT; */
+	/* p->button2.pin_config.pin = BUTTON_2_PIN; */
+    dsy_switch_pin(&p->button2, BUTTON_2_PORT, BUTTON_2_PIN);
+	/* p->button2.pull = DSY_SWITCH_PULLUP; */
+    dsy_switch_pull(&p->button2, DSY_SWITCH_PULLUP);
+	/* p->button2.polarity = DSY_SWITCH_POLARITY_INVERTED; */
+    dsy_switch_polarity(&p->button2, DSY_SWITCH_POLARITY_INVERTED);
+	/* p->button2.type = DSY_SWITCH_TYPE_MOMENTARY; */
+    dsy_switch_type(&p->button2, DSY_SWITCH_TYPE_MOMENTARY);
 
-	p->toggle.pin_config.port = TOGGLE_PORT;
-	p->toggle.pin_config.pin = TOGGLE_PIN;
-	p->toggle.pull = DSY_SWITCH_PULLUP;
-	p->toggle.type = DSY_SWITCH_TYPE_TOGGLE;
+	/* p->toggle.pin_config.port = TOGGLE_PORT; */
+	/* p->toggle.pin_config.pin = TOGGLE_PIN; */
+    dsy_switch_pin(&p->toggle, TOGGLE_PORT, TOGGLE_PIN);
+	/* p->toggle.pull = DSY_SWITCH_PULLUP; */
+    dsy_switch_pull(&p->toggle, DSY_SWITCH_PULLUP);
+	/* p->toggle.type = DSY_SWITCH_TYPE_TOGGLE; */
+    dsy_switch_type(&p->toggle, DSY_SWITCH_TYPE_TOGGLE);
 
-	p->gate_in1.pin.port = GATE_1_PORT;
-	p->gate_in1.pin.pin = GATE_1_PIN;
-	p->gate_in1.mode = DSY_GPIO_MODE_INPUT;
+	/* p->gate_in1.pin.port = GATE_1_PORT; */
+	/* p->gate_in1.pin.pin = GATE_1_PIN; */
+	/* p->gate_in1.mode = DSY_GPIO_MODE_INPUT; */
+    dsy_gpio_set(&p->gate_in1,
+                 GATE_1_PORT,
+                 GATE_1_PIN,
+                 DSY_GPIO_MODE_INPUT);
 
-	p->gate_in2.pin.port = GATE_2_PORT;
-	p->gate_in2.pin.pin = GATE_2_PIN;
-	p->gate_in2.mode = DSY_GPIO_MODE_INPUT;
+	/* p->gate_in2.pin.port = GATE_2_PORT; */
+	/* p->gate_in2.pin.pin = GATE_2_PIN; */
+	/* p->gate_in2.mode = DSY_GPIO_MODE_INPUT; */
 
-	p->gate_out.pin.port = GATE_OUT_PORT;
-	p->gate_out.pin.pin = GATE_OUT_PIN;
-	p->gate_out.pull = DSY_GPIO_NOPULL;
-	p->gate_out.mode = DSY_GPIO_MODE_OUTPUT_PP;
+    dsy_gpio_set(&p->gate_in2,
+                 GATE_2_PORT,
+                 GATE_2_PIN,
+                 DSY_GPIO_MODE_INPUT);
+
+	/* p->gate_out.pin.port = GATE_OUT_PORT; */
+	/* p->gate_out.pin.pin = GATE_OUT_PIN; */
+	/* p->gate_out.mode = DSY_GPIO_MODE_OUTPUT_PP; */
+
+    dsy_gpio_set(&p->gate_out,
+                 GATE_OUT_PORT,
+                 GATE_OUT_PIN,
+                 DSY_GPIO_MODE_OUTPUT_PP);
+
+	/* p->gate_out.pull = DSY_GPIO_NOPULL; */
+    dsy_gpio_pull(&p->gate_out, DSY_GPIO_NOPULL);
 
 	dsy_switch_init(&p->button1);
 	dsy_switch_init(&p->button2);

@@ -50,3 +50,24 @@ uint8_t dsy_switch_state(dsy_switch_t *sw)
             ? dsy_gpio_read(&sw->gpio)
             : !dsy_gpio_read(&sw->gpio));
 }
+
+void dsy_switch_pin(dsy_switch_t *sw, int port, int pin)
+{
+    sw->pin_config.port = port;
+    sw->pin_config.pin = pin;
+}
+
+void dsy_switch_pull(dsy_switch_t *sw, int pull)
+{
+    sw->pull = pull;
+}
+
+void dsy_switch_polarity(dsy_switch_t *sw, int polarity)
+{
+    sw->polarity = polarity;
+}
+
+void dsy_switch_type(dsy_switch_t *sw, int type)
+{
+    sw->type = type;
+}

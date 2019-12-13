@@ -73,3 +73,18 @@ void dsy_gpio_config_set(dsy_gpio_pin *config,
 	config[pos].port = port;
 	config[pos].pin = pin;
 }
+
+void dsy_gpio_set(dsy_gpio_t *p,
+                  int port,
+                  int pin,
+                  int mode)
+{
+	p->pin.port = port;
+	p->pin.pin = pin;
+	p->mode = DSY_GPIO_MODE_INPUT;
+}
+
+void dsy_gpio_pull(dsy_gpio_t *p, int pull)
+{
+    p->pull = pull;
+}
