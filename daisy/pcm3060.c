@@ -28,7 +28,7 @@ void codec_pcm3060_init(I2C_HandleTypeDef *hi2c)
      */
 	HAL_StatusTypeDef ret;
 	uint8_t reset_byte = 0;
-	uint8_t run_byte = 0b11000000;
+	uint8_t run_byte = 0xc0; /* 0b11000000 */
 	uint8_t addr = CODEC_DEVICE_ADDR;
 	uint8_t buff[2];
 	uint8_t cmd;

@@ -110,10 +110,6 @@ ASFLAGS = $(MCU) $(OPT) -Wall -fdata-sections -ffunction-sections
 
 CFLAGS = $(MCU) $(C_DEFS) $(C_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
 
-ifeq ($(DEBUG), 1)
-CFLAGS += -g -gdwarf-2
-endif
-
 LDSCRIPT = STM32H750IB_FLASH.lds
 
 LIBS = lc -lm -lnosys

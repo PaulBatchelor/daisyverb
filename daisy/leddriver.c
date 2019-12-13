@@ -4,7 +4,7 @@
 #include "i2c.h"
 #include "leddriver.h"
 
-#define PCA9685_I2C_BASE_ADDRESS 0b10000000
+#define PCA9685_I2C_BASE_ADDRESS 0x80
 #define PCA9685_MODE1 0x00 /* location for Mode1 register address */
 #define PCA9685_MODE2 0x01 /* location for Mode2 reigster address */
 #define PCA9685_LED0 0x06 /* location for start of LED0 registers */
@@ -56,11 +56,12 @@ void dsy_led_driver_init(dsy_i2c_handle_t *dsy_i2c)
     uint8_t i, j;
 	leddriver.dummy_bright = 0;
 	leddriver.master_dim   = 1.0f;
-	leddriver.dsy_i2c	  = dsy_i2c;
-	leddriver.i2c		   = dsy_i2c_hal_handle(dsy_i2c);
+	leddriver.dsy_i2c = dsy_i2c;
+	leddriver.i2c = dsy_i2c_hal_handle(dsy_i2c);
 	dsy_i2c_init(dsy_i2c);
 	init_rgb_leds();
 	gen_sorted_table();
+
 	for(i = 0; i < CHANNELS_PER_DRIVER; i++) {
 		leddriver.leds[i].bright = 4095;
 	}
@@ -80,11 +81,11 @@ void dsy_led_driver_init(dsy_i2c_handle_t *dsy_i2c)
 			leddriver.i2c, address | (i << 1), init_buff, 2, 1);
 		HAL_Delay(20);
 		init_buff[0] = PCA9685_MODE1;
-		init_buff[1] = 0b00100000;
+		init_buff[1] = 0x20; /* 0b00100000 */
 		HAL_I2C_Master_Transmit(
 			leddriver.i2c, address | (i << 1), init_buff, 2, 1);
 		init_buff[0] = PCA9685_MODE2;
-		init_buff[1] = 0b00010000;
+		init_buff[1] = 0x10; /* 0b00010000 */
         HAL_I2C_Master_Transmit(
             leddriver.i2c, address | (i << 1), init_buff, 2, 1);
     }
