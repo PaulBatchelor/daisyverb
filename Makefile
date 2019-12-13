@@ -2,24 +2,27 @@ OBJ += reverbsc.o dcblock.o system_stm32h7xx.o verb.o
 OBJ += patch.o
 OBJ += startup_stm32h750xx.o
 
-MODULES = \
-pcm3060 \
-wm8731 \
-dma \
-adc \
-audio \
-leddriver \
-qspi \
-sdram \
-system \
-i2c \
-sai \
-gpio \
-dac \
-switch \
+LIBDAISY_DIR = daisy
 
-CSRCS += $(addprefix daisy/, $(addsuffix .c, $(MODULES)))
-CSRCS += $(addprefix daisy/drivers/STM32H7xx_HAL_Driver/Src/, \
+CSRCS += $(addprefix $(LIBDAISY_DIR)/, \
+	pcm3060.c \
+	wm8731.c \
+	dma.c \
+	adc.c \
+	audio.c \
+	leddriver.c \
+	qspi.c \
+	sdram.c \
+	system.c \
+	i2c.c \
+	sai.c \
+	gpio.c \
+	dac.c \
+	switch.c)
+
+HAL_DIR = $(LIBDAISY_DIR)/drivers/STM32H7xx_HAL_Driver/Src/
+
+CSRCS += $(addprefix $(HAL_DIR), \
 	stm32h7xx_hal_pcd_ex.c \
 	stm32h7xx_ll_usb.c \
 	stm32h7xx_hal_adc.c \
@@ -67,8 +70,6 @@ CHIPSET = stm32h7x
 
 FLASH_ADDRESS = 0x08000000
 
-LIBDAISY_DIR = daisy
-
 PREFIX = arm-none-eabi-
 
 CC = $(PREFIX)gcc
@@ -91,7 +92,6 @@ CFLAGS +=  \
 -DSTM32H750xx
 
 CFLAGS += \
--Icore/ \
 -I$(LIBDAISY_DIR) \
 -I$(LIBDAISY_DIR)/drivers/CMSIS/Include/ \
 -I$(LIBDAISY_DIR)/drivers/CMSIS/Device/ST/STM32H7xx/Include \
