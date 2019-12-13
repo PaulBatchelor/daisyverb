@@ -100,6 +100,9 @@ CFLAGS += \
 ASFLAGS += $(MCU) -O2 -Wall -fdata-sections -ffunction-sections
 CFLAGS += $(MCU) -O2 -Wall -fdata-sections -ffunction-sections
 
+# this shuts up warnings from stm32h7xx_hal_spi.c
+CFLAGS += -Wno-strict-aliasing
+
 LDSCRIPT = STM32H750IB_flash.lds
 
 LIBS = -lc -lm -lnosys
