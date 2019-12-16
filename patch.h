@@ -13,11 +13,5 @@ enum {
 	DSY_PATCH_CV_LAST
 };
 
-typedef struct {
-	dsy_switch_t button1, button2, toggle;
-	dsy_gpio_t gate_in1, gate_in2, gate_out;
-	daisy_handle seed;
-} daisy_patch;
-
-void daisy_patch_init(daisy_patch *p);
+void daisy_patch_init(void);
 #endif

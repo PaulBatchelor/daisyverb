@@ -4,12 +4,11 @@
 #include "seed.h"
 #include "patch.h"
 
-static daisy_patch patch;
 static dsy_reverbsc_t verb;
 static dsy_dcblock_t dcblock[2];
 static float drylevel, send;
 
-static void VerbCallback(float *in, float *out, size_t size)
+static void callback(float *in, float *out, size_t size)
 {
     float dryL, dryR, wetL, wetR, sendL, sendR;
     size_t i;
@@ -32,12 +31,11 @@ static void VerbCallback(float *in, float *out, size_t size)
 
 int main(void)
 {
-    daisy_seed_init(&patch.seed);
-    daisy_patch_init(&patch);
+    daisy_patch_init();
     dsy_reverbsc_init(&verb, DSY_AUDIO_SAMPLE_RATE);
     dsy_dcblock_init(&dcblock[0], DSY_AUDIO_SAMPLE_RATE);
     dsy_dcblock_init(&dcblock[1], DSY_AUDIO_SAMPLE_RATE);
-    dsy_audio_set_callback(DSY_AUDIO_INTERNAL, VerbCallback);
+    dsy_audio_set_callback(DSY_AUDIO_INTERNAL, callback);
     dsy_adc_start();
     dsy_audio_start(DSY_AUDIO_INTERNAL);
     while(1) {}

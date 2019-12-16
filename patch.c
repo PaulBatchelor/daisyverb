@@ -36,7 +36,16 @@ enum {
 	LED_LAST
 };
 
-void daisy_patch_init(daisy_patch *p)
+
+typedef struct {
+	dsy_switch_t button1, button2, toggle;
+	dsy_gpio_t gate_in1, gate_in2, gate_out;
+	daisy_handle seed;
+} daisy_patch;
+
+static daisy_patch patch;
+
+static void daisy_patch_init_(daisy_patch *p)
 {
 	/* p->button1.pin_config.port = BUTTON_1_PORT; */
 	/* p->button1.pin_config.pin = BUTTON_1_PIN; */
@@ -125,4 +134,10 @@ void daisy_patch_init(daisy_patch *p)
     /*     dsy_adc_init(&p->seed.adc_handle); */
     /*     dsy_dac_init(&p->seed.dac_handle, DSY_DAC_CHN_BOTH); */
     /* } */
+}
+
+void daisy_patch_init(void)
+{
+    daisy_seed_init(&patch.seed);
+    daisy_patch_init_(&patch);
 }
